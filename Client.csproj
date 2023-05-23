@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\discount-product\.DS_Store" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\discount-product\product-1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\discount-product\product-2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\services\.DS_Store" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\services\services.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\slider\.DS_Store" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\slider\1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\slider\2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\slider\3.jpg" />
+    </ItemGroup>
+
+</Project>
