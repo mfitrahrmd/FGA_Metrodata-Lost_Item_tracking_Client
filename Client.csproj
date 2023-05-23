@@ -18,4 +18,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\vendor\furnish\assets\images\slider\3.jpg" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
+    </ItemGroup>
+
 </Project>
