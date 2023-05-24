@@ -29,4 +29,11 @@ public class AuthController : Controller
 
         return RedirectToAction("Index", "Home");
     }
+
+    public async Task<IActionResult> Logout()
+    {
+        HttpContext.Session.Remove("AccessToken");
+        
+        return RedirectToAction("Index", "Home");
+    }
 }
