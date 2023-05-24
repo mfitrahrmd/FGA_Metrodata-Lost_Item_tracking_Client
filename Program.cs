@@ -1,4 +1,5 @@
 using System.Text;
+using Client.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,6 +21,7 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.Name = "AuthSession";
         options.LoginPath = "/Login";
         options.Cookie.HttpOnly = true;
         options.Cookie.IsEssential = true;
@@ -52,6 +54,8 @@ builder.Services
     });
 builder.Services
     .AddAuthorization();
+
+builder.Services.AddHttpClient<RESTAPIService>();
 
 var app = builder.Build();
 

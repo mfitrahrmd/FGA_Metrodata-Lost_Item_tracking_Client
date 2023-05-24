@@ -22,4 +22,8 @@
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\vendor\purpleadmin" />
+    </ItemGroup>
+
 </Project>
