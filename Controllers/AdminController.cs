@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Client.Controllers;
 
 [Route("[controller]")]
-[Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
     private readonly RESTAPIService _restapiService;
@@ -49,12 +48,40 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    [Route("Items/RequestClaim/{requestId}/Approve")]
-    public async Task<IActionResult> ProcessApproveRequestFound([FromRoute] Guid requestId, [FromForm] UpdateRequest request)
+    [Route("Items/RequestFound/Approve")]
+    public async Task<IActionResult> ProcessApproveRequestFound([FromForm] updateRequest request)
     {
-        System.Console.WriteLine(requestId);
-        System.Console.WriteLine(request.Message);
+        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-found/{request.RequestId}/approve", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
 
         return RedirectToAction(nameof(RequestFoundItems));
     }
+    
+    [HttpPost]
+    [Route("Items/RequestFound/Reject")]
+    public async Task<IActionResult> ProcessRejectRequestFound([FromForm] updateRequest request)
+    {
+        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-found/{request.RequestId}/reject", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
+
+        return RedirectToAction(nameof(RequestFoundItems));
+    }
+    
+    [HttpPost]
+    [Route("Items/RequestClaim/Approve")]
+    public async Task<IActionResult> ProcessApproveRequestClaim([FromForm] updateRequest request)
+    {
+        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-claim/{request.RequestId}/approve", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
+
+        return RedirectToAction(nameof(RequestFoundItems));
+    }
+    
+    [HttpPost]
+    [Route("Items/RequestClaim/Reject")]
+    public async Task<IActionResult> ProcessRejectRequestClaim([FromForm] updateRequest request)
+    {
+        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-claim/{request.RequestId}/reject", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
+
+        return RedirectToAction(nameof(RequestFoundItems));
+    }
+
+    public record updateRequest(Guid RequestId, string Message);
 }

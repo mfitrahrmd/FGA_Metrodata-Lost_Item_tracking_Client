@@ -1,4 +1,6 @@
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using Client.Models;
 
 namespace Client.Extensions;
@@ -37,6 +39,15 @@ public class RESTAPIService
         return await response.Content.ReadFromJsonAsync<TResponse>();
     }
 
+    public async Task<TResponse?> Patch<TRequest, TResponse>(string endpoint, TRequest data, string accessToken)
+    {
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await HttpClient.PatchAsync(endpoint, new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json"));
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<TResponse>();
+    }
 
     public async Task<Response<LoginResponse>?> Login(LoginRequest request)
     {

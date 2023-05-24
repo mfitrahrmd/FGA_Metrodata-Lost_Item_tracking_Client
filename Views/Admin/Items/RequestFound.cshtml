@@ -3,7 +3,6 @@
 @{
     Layout = "_Layout_Admin";
     ViewData["Title"] = "Request Found Items";
-    
 }
 
 <!-- Modal -->
@@ -14,13 +13,16 @@
         <h5 class="modal-title" id="baseModal"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    <form class="forms-sample" asp-controller="Admin" asp-action="">
+    <form id="form-update_status" class="forms-sample" asp-controller="Admin" asp-action="">
         <div class="modal-body">
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                    <label for="message">Message</label>
-                    <input type="text" class="form-control" id="message" name="message" placeholder="Ok">
+                        <label for="message">Message</label>
+                        <input type="text" class="form-control" id="message" name="message" placeholder="Ok">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="requestId" name="requestId" hidden>
                     </div>
                 </div>
             </div>
@@ -60,10 +62,10 @@
                         @if (i.Status.Equals("Pending"))
                         {
                             <div class="position-absolute d-flex gap-1" style="lef: 0; right: 0; bottom: 0;">
-                                <button onclick="showModal(@i.RequestId)" id="btn-approve" type="button" class="btn btn-success p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
+                                <button onclick="showModal(`Approve`, `@i.RequestId`)" id="btn-approve" type="button" class="btn btn-success p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
                                 Approve
                                 </button>
-                                <button id="btn-reject" type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
+                                <button onclick="showModal(`Reject`, `@i.RequestId`)" id="btn-reject" type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
                                 Reject
                                 </button>
                             </div>
@@ -101,10 +103,16 @@
         window.location = url;
     });
     
-    $('#my-modal').toggle();
-    
-    function showModal(id) {
-        console.log('awdawdaw')
+    function showModal(status, id) {
+        switch (status) {
+            case "Approve":
+                $('form#form-update_status').attr('asp-action', 'ProcessApproveRequestFound')
+                $('form#form-update_status input#requestId').val(id)
+                break;
+            case "Reject":
+                $('form#form-update_status').attr('asp-action', 'ProcessRejectRequestFound')
+                $('form#form-update_status input#requestId').val(id)
+        }
     }
     </script>
 }
