@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Client.Models;
 using Client.Extensions;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Client.Controllers;
 
@@ -32,7 +33,7 @@ public class AdminController : Controller
     [Route("Items/RequestFound")]
     public async Task<IActionResult> RequestFoundItems()
     {
-        var response = await _restapiService.Get<Response<IEnumerable<RequestFound>>>("items/request-found", HttpContext.Session.GetString("AccessToken"));
+        var response = await _restapiService.Get<Response<IEnumerable<RequestFound>>>(QueryHelpers.AddQueryString("items/request-found", Request.Query), HttpContext.Session.GetString("AccessToken"));
 
         return View("Items/RequestFound", response.Data);
     }
