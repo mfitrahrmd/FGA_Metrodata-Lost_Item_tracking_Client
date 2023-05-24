@@ -27,6 +27,17 @@ public class RESTAPIService
         return await response.Content.ReadFromJsonAsync<TResponse>();
     }
 
+    public async Task<TResponse?> Post<TRequest, TResponse>(string endpoint, TRequest data, string accessToken)
+    {
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await HttpClient.PostAsJsonAsync(endpoint, data);
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<TResponse>();
+    }
+
+
     public async Task<Response<LoginResponse>?> Login(LoginRequest request)
     {
         var response = await HttpClient.PostAsJsonAsync("accounts/login", request);

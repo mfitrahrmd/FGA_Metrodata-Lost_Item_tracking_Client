@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Client.Models;
 using Client.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Controllers;
 
 [Route("[controller]")]
+[Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
     private readonly RESTAPIService _restapiService;
@@ -44,5 +46,15 @@ public class AdminController : Controller
         var response = await _restapiService.Get<Response<IEnumerable<RequestClaim>>>(QueryHelpers.AddQueryString("items/request-claim", Request.Query), HttpContext.Session.GetString("AccessToken"));
 
         return View("Items/RequestClaim", response.Data);
+    }
+
+    [HttpPost]
+    [Route("Items/RequestClaim/{requestId}/Approve")]
+    public async Task<IActionResult> ProcessApproveRequestFound([FromRoute] Guid requestId, [FromForm] UpdateRequest request)
+    {
+        System.Console.WriteLine(requestId);
+        System.Console.WriteLine(request.Message);
+
+        return RedirectToAction(nameof(RequestFoundItems));
     }
 }

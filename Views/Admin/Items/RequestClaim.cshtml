@@ -5,6 +5,34 @@
     ViewData["Title"] = "Request Claim Items";
 }
 
+<!-- Modal -->
+<div class="modal fade" id="base-modal" tabindex="-1" aria-labelledby="baseModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="baseModal"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <form class="forms-sample" asp-controller="Admin" asp-action="">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                    <label for="message">Message</label>
+                    <input type="text" class="form-control" id="message" name="message" placeholder="Ok">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 
 <article class="container">
     <div class="row justify-content-end mb-4">
