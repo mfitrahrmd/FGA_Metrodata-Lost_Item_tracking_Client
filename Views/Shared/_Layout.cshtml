@@ -76,18 +76,18 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul id="nav" class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a data-scroll-nav="0" href="#home">Home</a>
+                                <a data-scroll-nav="0" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             @if (Context.User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
-                                    <a data-scroll-nav="1" asp-page="@Context.User.FindFirstValue(ClaimTypes.Role)/Dashboard">@Context.User.FindFirstValue(ClaimTypes.Role) Dashboard</a>
+                                    <a data-scroll-nav="1" asp-controller="@Context.User.FindFirstValue(ClaimTypes.Role)" asp-action="Dashboard">@Context.User.FindFirstValue(ClaimTypes.Role) Dashboard</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a data-scroll-nav="1" asp-page="Login">Login</a>
+                                    <a data-scroll-nav="1" asp-controller="Auth" asp-action="Login">Login</a>
                                 </li>
                             }
                         </ul> <!-- navbar nav -->

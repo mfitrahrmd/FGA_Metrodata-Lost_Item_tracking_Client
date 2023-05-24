@@ -1,5 +1,4 @@
-@page
-@model Client.Pages.Admin.Items.RequestFound
+@model IEnumerable<Client.Models.RequestFound>
 
 @{
     Layout = "Shared/_Layout_Admin";
@@ -36,7 +35,7 @@
         </div>
     </div>
     <div class="row g-6 g-lg-4 row-cols-1 row-cols-md-3 row-cols-lg-4">
-        @foreach (var i in Model.Data)
+        @foreach (var i in Model)
         {
             <div class="col">
                 <div class="card grid-margin bg-gradient-primary text-dark">
