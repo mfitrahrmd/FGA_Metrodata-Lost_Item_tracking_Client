@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Client.Models;
 using Client.Extensions;
 
-namespace WebApp.Controllers;
+namespace Client.Controllers;
 
 public class AuthController : Controller
 {
@@ -17,5 +17,16 @@ public class AuthController : Controller
     public IActionResult Login()
     {
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ProcessLogin([FromForm] LoginRequest request)
+    {
+        System.Console.WriteLine("received");
+        var response = await _restapiService.Login(request);
+
+        HttpContext.Session.SetString("AccessToken", response.Data.AccessToken);
+
+        return RedirectToAction("Index", "Home");
     }
 }

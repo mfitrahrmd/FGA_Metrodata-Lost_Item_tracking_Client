@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Client.Models;
 
 namespace Client.Extensions;
 
@@ -24,5 +25,14 @@ public class RESTAPIService
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<TResponse>();
+    }
+
+    public async Task<Response<LoginResponse>?> Login(LoginRequest request)
+    {
+        var response = await HttpClient.PostAsJsonAsync("accounts/login", request);
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<Response<LoginResponse>>();
     }
 }

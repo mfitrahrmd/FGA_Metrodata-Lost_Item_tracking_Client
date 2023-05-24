@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Client.Models;
 
-namespace WebApp.Controllers;
+namespace Client.Controllers;
+
 
 public class HomeController : Controller
 {

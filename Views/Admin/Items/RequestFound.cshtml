@@ -1,27 +1,8 @@
 @model IEnumerable<Client.Models.RequestFound>
 
 @{
-    Layout = "Shared/_Layout_Admin";
+    Layout = "_Layout_Admin";
 }
-
-<div id="my-modal" class="modal fade" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Header</h3>
-            </div>
-            <form method="post" asp-page-handler="Approve">
-                <div class="modal-body">
-                    <input type="text" name="message">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <article class="container">
     <div class="row justify-content-end mb-4">
