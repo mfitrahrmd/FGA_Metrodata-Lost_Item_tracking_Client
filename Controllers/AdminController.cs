@@ -37,4 +37,12 @@ public class AdminController : Controller
 
         return View("Items/RequestFound", response.Data);
     }
+
+    [Route("Items/RequestClaim")]
+    public async Task<IActionResult> RequestClaimItems()
+    {
+        var response = await _restapiService.Get<Response<IEnumerable<RequestClaim>>>(QueryHelpers.AddQueryString("items/request-claim", Request.Query), HttpContext.Session.GetString("AccessToken"));
+
+        return View("Items/RequestClaim", response.Data);
+    }
 }

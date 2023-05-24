@@ -1,3 +1,74 @@
+@model IEnumerable<Client.Models.RequestClaim>
+
 @{
     Layout = "_Layout_Admin";
+    ViewData["Title"] = "Request Claim Items";
+}
+
+
+<article class="container">
+    <div class="row justify-content-end mb-4">
+        <div class="col-3">
+            <select id="select-status" class="form-select float-end" name="status">
+                <option value=""></option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Rejected</option>
+                <option value="approved">Approved</option>
+            </select>
+        </div>
+    </div>
+    <div class="row g-6 g-lg-4 row-cols-1 row-cols-md-3 row-cols-lg-4">
+        @foreach (var i in Model)
+        {
+            <div class="col">
+                <div class="card grid-margin bg-gradient-primary text-dark">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>@i.RequestItem.Name</h4>
+                        </div>
+                    </div>
+                    <div class="position-relative">
+                        <img class="card-img-top" src="@i.RequestItem.ImagePath" alt="" style="height: 250px">
+                        @if (i.Status.Equals("Pending"))
+                        {
+                            <div class="position-absolute bottom-0 end-0">
+                                <button type="button" class="btn-gradient-success" data-bs-toggle="modal" data-bs-target="my-modal">Approve</button>
+                                <button class="btn-gradient-danger">Reject</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body p-2">
+                        <h3>@i.Status</h3>
+                        <p class="card-subtitle text-truncate text-dark">
+                            @i.RequestItem.Description
+                        </p>
+                        <smaall class="small">
+                            Request By @i.RequestBy.FullName<br>@@@i.RequestAt.ToLocalTime()
+                        </smaall>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</article>
+
+@section Scripts
+{
+    <script>
+    const queryStatus = new URLSearchParams(window.location.search).get('status');
+    
+    $("select#select-status option[value='"+queryStatus+"']").attr("selected", "selected")
+    
+    $('select#select-status').on('change', function (e) {
+        var url = window.location.href.split('?')[0];
+        
+        if (this.value) {
+            url += `?status=${this.value}`;
+        }
+        
+        window.location = url;
+    });
+    
+    $('#my-modal').toggle();
+    </script>
 }
