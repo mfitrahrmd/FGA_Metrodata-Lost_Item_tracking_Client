@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="~/vendor/purpleadmin/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/vendor/purpleadmin/assets/images/favicon.ico"/>
+    <link rel="stylesheet" href="~/css/styles.css">
 </head>
 <body>
 <div class="container-scroller">
@@ -267,6 +268,7 @@
 </div>
 <!-- container-scroller -->
 <!-- plugins:js -->
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="~/vendor/purpleadmin/assets/vendors/js/vendor.bundle.base.js"></script>
 <!-- endinject -->
 <!-- Plugin js for this page -->
@@ -281,6 +283,14 @@
 <!-- Custom js for this page -->
 <script src="~/vendor/purpleadmin/assets/js/dashboard.js"></script>
 <script src="~/vendor/purpleadmin/assets/js/todolist.js"></script>
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl, {
+          html: true
+      })
+    })
+</script>
 <!-- End custom js for this page -->
 @await RenderSectionAsync("Scripts", false)
 </body>

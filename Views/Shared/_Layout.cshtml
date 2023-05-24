@@ -47,32 +47,32 @@
 
 <header class="header-area">
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 d-flex flex-row fixed-top">
-        <div class="navbar home-navbar-wrapper">
+        <div class="d-flex p-2 justify-content-center align-items-center w-100">
+            <div class="d-flex justify-content-between w-100">
+                    <a class="navbar-brand" href="/">
+                        <img src="assets/images/logo.png" alt="Logo">
+                    </a> <!-- Logo -->
 
-            <a class="navbar-brand" href="/">
-                <img src="assets/images/logo.png" alt="Logo">
-            </a> <!-- Logo -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="bar-icon"></span>
-                <span class="bar-icon"></span>
-                <span class="bar-icon"></span>
-            </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                <a asp-controller="@User.FindFirstValue(ClaimTypes.Role)" asp-action="Dashboard" class="btn btn-primary">Dashboard</a>
+                }
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+                <div>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex">
+                            <a asp-controller="Auth" asp-action="Login" class="btn btn-gradient-primary btn-rounded btn-fw">Login</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex">
+                            <a asp-controller="Auth" asp-action="Logout" class="btn btn-gradient-primary btn-rounded btn-fw">Logout</a>
+                        </div>
+                    }
+                </div>
             </div>
-            @if (!Context.User.Identity.IsAuthenticated)
-            {
-                <div class="d-flex">
-                    <a asp-controller="Auth" asp-action="Login" class="btn btn-gradient-primary btn-rounded btn-fw">Login</a>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex">
-                    <a asp-controller="Auth" asp-action="Logout" class="btn btn-gradient-primary btn-rounded btn-fw">Logout</a>
-                </div>
-            }
         </div>
     </nav> <!-- navbar -->
 </header>

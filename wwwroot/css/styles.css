@@ -1,14 +1,41 @@
 article {
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .home-navbar-wrapper {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding:  1rem;
+}
+
+section#found-items {
+    padding: 20px;
+    height: 450px;
+    overflow-y: auto;
+    -ms-overflow-y: auto;
+}
+
+.card .card-body .info-top {
+    margin: 0 .5rem;
+}
+
+.card .card-body .info-bottom {
+    margin: 0 .25rem;
+}
+
+.request-action-wrapper {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: -15px;
+    right: 15px;
+}
+
+.request-action-wrapper button {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
 }

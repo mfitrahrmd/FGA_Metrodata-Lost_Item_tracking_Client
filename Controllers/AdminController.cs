@@ -26,7 +26,7 @@ public class AdminController : Controller
     [Route("Items/Found")]
     public async Task<IActionResult> FoundItems()
     {
-        var response = await _restapiService.Get<Response<IEnumerable<Item>>>("items/found", HttpContext.Session.GetString("AccessToken"));
+        var response = await _restapiService.Get<Response<IEnumerable<FoundItem>>>("items/found", HttpContext.Session.GetString("AccessToken"));
 
         return View("Items/Found", response.Data);
     }
@@ -69,18 +69,18 @@ public class AdminController : Controller
     [Route("Items/RequestClaim/Approve")]
     public async Task<IActionResult> ProcessApproveRequestClaim([FromForm] updateRequest request)
     {
-        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-claim/{request.RequestId}/approve", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
+        await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/found/request-claim/{request.RequestId}/approve", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
 
-        return RedirectToAction(nameof(RequestFoundItems));
+        return RedirectToAction(nameof(RequestClaimItems));
     }
     
     [HttpPost]
     [Route("Items/RequestClaim/Reject")]
     public async Task<IActionResult> ProcessRejectRequestClaim([FromForm] updateRequest request)
     {
-        var response = await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/request-claim/{request.RequestId}/reject", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
+        await _restapiService.Patch<UpdateRequest, Response<Status>>($"items/found/request-claim/{request.RequestId}/reject", new UpdateRequest{Message = request.Message}, HttpContext.Session.GetString("AccessToken"));
 
-        return RedirectToAction(nameof(RequestFoundItems));
+        return RedirectToAction(nameof(RequestClaimItems));
     }
 
     public record updateRequest(Guid RequestId, string Message);

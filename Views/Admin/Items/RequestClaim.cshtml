@@ -7,33 +7,33 @@
 
 <!-- Modal -->
 <div class="modal fade" id="base-modal" tabindex="-1" aria-labelledby="baseModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="baseModal"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-    <form id="form-update_status" class="forms-sample" asp-controller="Admin" asp-action="">
-        <div class="modal-body">
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <input type="text" class="form-control" id="message" name="message" placeholder="Ok">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="requestId" name="requestId" hidden>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span></span> Request Claim Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-update_status" method="post" class="forms-sample" asp-controller="Admin" asp-action="">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <input type="text" class="form-control" id="message" name="message" placeholder="Ok">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="requestId" name="requestId" hidden>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
     </div>
-  </div>
 </div>
 
 <article class="container">
@@ -51,34 +51,21 @@
         @foreach (var i in Model)
         {
             <div class="col">
-                <div class="card grid-margin bg-gradient-primary text-dark">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h4>@i.RequestItem.Name</h4>
-                        </div>
-                    </div>
-                    <div class="position-relative">
-                        <img class="card-img-top" src="@i.RequestItem.ImagePath" alt="" style="height: 250px">
+                <div class="card" style="height: 300px">
+                    <img class="card-img-top h-100" src="@i.RequestItem.ImagePath" alt="">
+                    <div class="card-body position-relative">
                         @if (i.Status.Equals("Pending"))
                         {
-                            <div class="position-absolute d-flex gap-1" style="lef: 0; right: 0; bottom: 0;">
-                                <button onclick="showModal(`Approve`, `@i.RequestId`)" id="btn-approve" type="button" class="btn btn-success p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
-                                Approve
-                                </button>
-                                <button onclick="showModal(`Reject`, `@i.RequestId`)" id="btn-reject" type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#base-modal">
-                                Reject
-                                </button>
+                            <div class="request-action-wrapper">
+                                <button onclick="showModal(`Approve`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-success btn-rounded"><i class="mdi mdi-check"></i></button>
+                                <button onclick="showModal(`Reject`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-danger btn-rounded"><i class="mdi mdi-close"></i></button>
                             </div>
                         }
-                    </div>
-                    <div class="card-body p-2">
-                        <h3>@i.Status</h3>
-                        <p class="card-subtitle text-truncate text-dark">
-                            @i.RequestItem.Description
-                        </p>
-                        <smaall class="small">
-                            Request By @i.RequestBy.FullName<br>@@@i.RequestAt.ToLocalTime()
-                        </smaall>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-subtitle text-truncate">@i.RequestItem.Name</p>
+                            <i class="mdi mdi-information" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="<small>Request By : @i.RequestBy.FullName</small> <small> @@@i.RequestAt</small>"></i>
+                        </div>
+                        <p class="text-truncate">@i.RequestItem.Description</p>
                     </div>
                 </div>
             </div>
@@ -104,15 +91,9 @@
     });
     
     function showModal(status, id) {
-        switch (status) {
-            case "Approve":
-                $('form#form-update_status').attr('action', 'RequestClaim/Approve')
-                $('form#form-update_status input#requestId').val(id)
-                break;
-            case "Reject":
-                $('form#form-update_status').attr('action', 'RequestClaim/Reject')
-                $('form#form-update_status input#requestId').val(id)
-        }
+        $('form#form-update_status').attr('action', `RequestClaim/${status}`)
+        $('form#form-update_status input#requestId').val(id)
+        $('#base-modal .modal-header .modal-title span').text(status)
     }
     </script>
 }

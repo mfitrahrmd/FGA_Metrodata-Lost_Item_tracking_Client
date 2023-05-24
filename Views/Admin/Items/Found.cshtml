@@ -1,4 +1,4 @@
-@model IEnumerable<Client.Models.Item>
+@model IEnumerable<Client.Models.FoundItem>
 
 @{
     Layout = "_Layout_Admin";
@@ -6,27 +6,26 @@
 }
 
 <article class="container">
-    <div class="row g-6 g-lg-4 row-cols-1 row-cols-md-3 row-cols-lg-4">
-        @if (Model is not null)
-        {
-            @foreach (var i in Model)
+    <section id="found-items">
+        <div class="row g-6 g-lg-4 row-cols-1 row-cols-md-3 row-cols-lg-4">
+            @if (Model is not null)
             {
-                <div class="col">
-                    <div class="card grid-margin bg-gradient-dark">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h4>@i.Name</h4>
+                @foreach (var i in Model)
+                {
+                    <div class="col">
+                        <div class="card" style="height: 300px">
+                            <img class="card-img-top" src="@i.ImagePath" alt="" style="height: 100%">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="card-subtitle text-truncate">@i.Name</p>
+                                    <i class="mdi mdi-information" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="<small>Found By : @i.FoundBy.FullName</small> <small> @@@i.FoundAt</small>"></i>
+                                </div>
+                                <p class="text-truncate">@i.Description</p>
                             </div>
                         </div>
-                            <img class="card-img-top" src="@i.ImagePath" alt="" style="height: 250px">
-                        <div class="card-body p-1">
-                            <p class="card-subtitle text-truncate">
-                                @i.Description
-                            </p>
-                        </div>
                     </div>
-                </div>
+                }
             }
-        }
-    </div>
+        </div>
+    </section>
 </article>
