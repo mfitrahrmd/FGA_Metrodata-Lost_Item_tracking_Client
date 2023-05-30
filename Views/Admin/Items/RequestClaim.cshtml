@@ -1,9 +1,30 @@
-@model IEnumerable<Client.Models.RequestClaim>
+@model IEnumerable<Client.Models.RequestClaimItem>
 
 @{
     Layout = "_Layout_Admin";
     ViewData["Title"] = "Request Claim Items";
 }
+
+<div class="modal fade" id="modal-confirm" tabindex="-1" aria-labelledby="modalConfirm" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span></span> Confirm Claimed Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-confirm_claimed" method="post" asp-controller="Admin" asp-action="ProcessConfirmClaimed">
+                <div class="modal-body">
+                    <input hidden type="text" name="requestId">
+                    <h4>This Item Has Been Claimed ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="base-modal" tabindex="-1" aria-labelledby="baseModal" aria-hidden="true">
@@ -37,10 +58,17 @@
 </div>
 
 <article class="container">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-clock-in"></i>
+            </span> Request Claim Items
+        </h3>
+    </div>
     <div class="row justify-content-end mb-4">
-        <div class="col-3">
+        <div class="col-6 col-lg-3">
             <select id="select-status" class="form-select float-end" name="status">
-                <option value=""></option>
+                <option value="">-</option>
                 <option value="pending">Pending</option>
                 <option value="rejected">Rejected</option>
                 <option value="approved">Approved</option>
@@ -51,14 +79,30 @@
         @foreach (var i in Model)
         {
             <div class="col">
-                <div class="card" style="height: 300px">
-                    <img class="card-img-top h-100" src="@i.RequestItem.ImagePath" alt="">
+                <div class="card position-relative">
+                    @switch (i.Status)
+                    {
+                        case "Approved":
+                            <label class="badge badge-success position-absolute top-0 end-0">Approved</label>
+                            break;
+                        case "Rejected":
+                            <label class="badge badge-danger position-absolute top-0 end-0">Rejected</label>
+                            break;
+                        case "Pending":
+                            <label class="badge badge-warning position-absolute top-0 end-0">Pending</label>
+                            break;
+                    }
+                    <img class="card-img-top" src="@i.RequestItem.ImagePath" alt="" style="height: 250px">
                     <div class="card-body position-relative">
                         @if (i.Status.Equals("Pending"))
                         {
                             <div class="request-action-wrapper">
-                                <button onclick="showModal(`Approve`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-success btn-rounded"><i class="mdi mdi-check"></i></button>
-                                <button onclick="showModal(`Reject`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-danger btn-rounded"><i class="mdi mdi-close"></i></button>
+                                <button onclick="showModal(`Approve`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-success btn-rounded">
+                                    <i class="mdi mdi-check"></i>
+                                </button>
+                                <button onclick="showModal(`Reject`, `@i.RequestId`)" data-bs-toggle="modal" data-bs-target="#base-modal" class="btn btn-danger btn-rounded">
+                                    <i class="mdi mdi-close"></i>
+                                </button>
                             </div>
                         }
                         <div class="d-flex justify-content-between align-items-center">
@@ -66,6 +110,10 @@
                             <i class="mdi mdi-information" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="<small>Request By : @i.RequestBy.FullName</small> <small> @@@i.RequestAt</small>"></i>
                         </div>
                         <p class="text-truncate">@i.RequestItem.Description</p>
+                        @if (i.Status.Equals("Approved"))
+                        {
+                            <button onclick="showModalConfirm('@i.RequestId')" class="btn btn-primary btn-md align-self-end" data-bs-toggle="modal" data-bs-target="#modal-confirm">Confirm Item Claimed</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -94,6 +142,11 @@
         $('form#form-update_status').attr('action', `RequestClaim/${status}`)
         $('form#form-update_status input#requestId').val(id)
         $('#base-modal .modal-header .modal-title span').text(status)
+    }
+    
+    function showModalConfirm(requestId) {
+        console.log(requestId);
+        $('form#form-confirm_claimed input[name=requestId]').val(requestId);
     }
     </script>
 }

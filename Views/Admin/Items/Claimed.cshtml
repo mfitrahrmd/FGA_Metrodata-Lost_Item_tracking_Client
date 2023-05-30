@@ -1,8 +1,8 @@
-@model IEnumerable<Client.Models.FoundItem>
+@model IEnumerable<Client.Models.ClaimedItem>
 
 @{
     Layout = "_Layout_Admin";
-    ViewData["Title"] = "Found Items";
+    ViewData["Title"] = "Claimed Items";
 }
 
 <article class="container">
@@ -10,7 +10,7 @@
         <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
                 <i class="mdi mdi-collage"></i>
-            </span> Found Items
+            </span> Claimed Items
         </h3>
     </div>
     <section>
@@ -41,7 +41,7 @@
                                             <h5 class="card-title">@i.Name</h5>
                                             <p class="card-text">@i.Description</p>
                                             <p class="text-muted card-description small">
-                                                Found @@@i.FoundAt by @i.FoundBy.FullName
+                                                Claimed @@@i.ClaimedAt by @i.ClaimedBy.FullName
                                             </p>
                                         </div>
                                     </div>
