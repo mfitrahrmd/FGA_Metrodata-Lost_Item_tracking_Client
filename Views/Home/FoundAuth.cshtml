@@ -1,0 +1,107 @@
+@model IEnumerable<Client.Models.UserFoundItem>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Found Items";
+}
+
+<div class="modal fade" id="base-modal" tabindex="-1" aria-labelledby="baseModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span></span> Request Claim Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-request_found" method="post" asp-controller="User" asp-action="ProcessRequestClaim">
+                <div class="modal-body">
+                    <input hidden type="text" name="itemId">
+                    <h4>Confirm Request This Item ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<article class="container p-lg-5" style="margin-top: 2.5rem">
+    <section id="found-items">
+        <div class="row justify-content-end mb-4">
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-4 d-flex justify-content-center align-items-center">
+                        <div>Filter :</div>
+                    </div>
+                    <div class="col-8">
+                        <input type="text" onkeyup="filterCard()" class="form-control" name="cardFilterInput" id="cardFilterInput">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="found_items_card_wrapper">
+            <div class="row g-6 g-lg-4 row-cols-2">
+                @if (Model is not null)
+                {
+                    @foreach (var i in Model)
+                    {
+                        <div class="col">
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4" style="height: 225px">
+                                        <img src="@i.ImagePath" class="card-img-top img-fluid rounded-start h-100" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body h-100 d-flex flex-column">
+                                            <h5 class="card-title">@i.Name</h5>
+                                            <p class="card-text">@i.Description</p>
+                                            <p class="card-text">
+                                                <small class="text-muted">Found @@@i.FoundAt by @i.FoundBy.FullName</small>
+                                            </p>
+                                            
+                                            @if (!User.IsInRole("Admin"))
+                                            {
+                                                @if (i.IsRequested)
+                                                {
+                                                    <button class="btn btn-secondary disabled mt-auto align-self-end">Request Sent <i class="mdi mdi-comment-check"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button onclick="showModal('@i.Id')" class="btn btn-primary btn-md align-self-end" data-bs-toggle="modal" data-bs-target="#base-modal">Request Claim This Item</button>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </section>
+</article>
+
+@section Scripts
+{
+    <script>
+      function filterCard() {
+        const cardFilterInput = $('#cardFilterInput').val().toLocaleLowerCase()
+        const cards = $('.found_items_card_wrapper > .row').find('.card')
+        
+        cards.each(function() {
+          if ($(this).find('.card-title').text().toLowerCase().indexOf(cardFilterInput) > -1 || $(this).find('.card-text').text().toLowerCase().indexOf(cardFilterInput) > -1 || $(this).find('.card-description').text().toLowerCase().indexOf(cardFilterInput) > -1) {
+            $(this).parent().removeClass('d-none')
+          } else {
+            $(this).parent().addClass('d-none')
+          }
+        })
+      }
+      
+      function showModal(itemId) {
+        console.log(itemId);
+        $('#base-modal form input[name=itemId]').val(itemId);
+      }
+    </script>
+}
