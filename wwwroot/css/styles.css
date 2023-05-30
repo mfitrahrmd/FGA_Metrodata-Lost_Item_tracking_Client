@@ -7,10 +7,10 @@ article {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding:  1rem;
+    padding: 1rem;
 }
 
-section#found-items {
+.items_card_wrapper {
     padding: 20px;
     height: 450px;
     overflow-y: auto;
