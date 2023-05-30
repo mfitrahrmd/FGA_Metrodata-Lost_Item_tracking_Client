@@ -1,6 +1,6 @@
 namespace Client.Models;
 
-public class UpdateRequest
+public class UpdateStatusRequest
 {
     public string Message { get; set; }
 }

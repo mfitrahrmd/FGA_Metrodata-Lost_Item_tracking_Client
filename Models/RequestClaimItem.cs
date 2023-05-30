@@ -1,6 +1,6 @@
 namespace Client.Models;
 
-public class RequestClaim
+public class RequestClaimItem
 {
     public Guid RequestId { get; set; }
     public Item RequestItem { get; set; }
