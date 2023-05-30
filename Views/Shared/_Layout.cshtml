@@ -45,37 +45,57 @@
 
 <!--====== HEADER PART START ======-->
 
-<header class="header-area">
-    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 d-flex flex-row fixed-top">
-        <div class="d-flex p-2 justify-content-center align-items-center w-100">
-            <div class="d-flex justify-content-between w-100">
-                    <a class="navbar-brand" href="/">
-                        <img src="assets/images/logo.png" alt="Logo">
-                    </a> <!-- Logo -->
+<header class="header">
+    <div class="navbar-area">
+        <div class="">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+                      <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarScroll">
+                            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav gap-3">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item"><a asp-controller="Admin" asp-action="Dashboard" class="btn btn-primary">Dashboard</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item"><a asp-controller="User" asp-action="Dashboard" class="btn btn-primary">Dashboard</a></li>
+                                    }
+                                }
 
-                @if (User.Identity.IsAuthenticated)
-                {
-                <a asp-controller="@User.FindFirstValue(ClaimTypes.Role)" asp-action="Dashboard" class="btn btn-primary">Dashboard</a>
-                }
-
-                <div>
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <div class="d-flex">
-                            <a asp-controller="Auth" asp-action="Login" class="btn btn-gradient-primary btn-rounded btn-fw">Login</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item"><a asp-controller="Auth" asp-action="Logout" class="btn btn-primary">Logout</a></li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item"><a asp-controller="Auth" asp-action="Login" class="btn btn-primary">Login</a></li>
+                                }
+                            </ul>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="d-flex">
-                            <a asp-controller="Auth" asp-action="Logout" class="btn btn-gradient-primary btn-rounded btn-fw">Logout</a>
-                        </div>
-                    }
+                      </div>
+                    </nav>
+                    <!-- navbar -->
                 </div>
             </div>
+            <!-- row -->
         </div>
-    </nav> <!-- navbar -->
+        <!-- container -->
+    </div>
+    <!-- navbar area -->
 </header>
+
 
 <!--====== HEADER PART ENDS ======-->
 
