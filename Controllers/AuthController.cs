@@ -19,10 +19,16 @@ public class AuthController : Controller
         return View();
     }
 
+    public async Task<IActionResult> Register()
+    {
+        var departmentsData = await _restapiService.Get<Response<IEnumerable<Department>>>($"departments", HttpContext.Session.GetString("AccessToken"));
+
+        return View(departmentsData.Data);
+    }
+
     [HttpPost]
     public async Task<IActionResult> ProcessLogin([FromForm] LoginRequest request)
     {
-        System.Console.WriteLine("received");
         var response = await _restapiService.Login(request);
 
         HttpContext.Session.SetString("AccessToken", response.Data.AccessToken);
@@ -35,5 +41,13 @@ public class AuthController : Controller
         HttpContext.Session.Remove("AccessToken");
         
         return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ProcessRegister([FromForm] RegisterRequest request)
+    {
+        var response = await _restapiService.Register(request);
+        
+        return RedirectToAction("Login");
     }
 }
