@@ -1,0 +1,56 @@
+@model IEnumerable<Client.Models.MyRequestClaimItem>
+
+@{
+    Layout = "_Layout_User";
+}
+
+<article>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-column">
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th> </th>
+                                <th> Item </th>
+                                <th> Status </th>
+                                <th> Status Message </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td class="py-1">
+                                        <img src="@i.Item.ImagePath" alt="image"/>
+                                    </td>
+                                    <td> @i.Item.Name </td>
+                                    <td>
+                                        @switch (i.Status.Name)
+                                        {
+                                            case "Approved":
+                                                <label class="badge badge-success">@i.Status.Name</label>
+                                                break;
+                                            case "Rejected":
+                                                <label class="badge badge-danger">@i.Status.Name</label>
+                                                break;
+                                            case "Pending":
+                                                <label class="badge badge-warning">@i.Status.Name</label>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @i.Status.Message
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

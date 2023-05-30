@@ -1,0 +1,96 @@
+@model IEnumerable<Client.Models.MyRequestFoundItem>
+
+@{
+    Layout = "_Layout_User";
+}
+
+<div class="modal fade" id="base-modal" tabindex="-1" aria-labelledby="baseModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span></span> Request Found Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-request_found" method="post" enctype="multipart/form-data" asp-controller="User" asp-action="ProcessRequestFound">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label" for="name">Item Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Necklace">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea class="form-control" name="description" id="description" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-description"> Image </p>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="file" name="file" class="form-control bg-white">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<article>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-column">
+                <button class="btn btn-primary btn-md align-self-end" data-bs-toggle="modal" data-bs-target="#base-modal"><i class="mdi mdi-library-plus"></i> Request Found Item</button>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th> </th>
+                                <th> Item </th>
+                                <th> Status </th>
+                                <th> Status Message </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td class="py-1">
+                                        <img src="@i.Item.ImagePath" alt="image"/>
+                                    </td>
+                                    <td> @i.Item.Name </td>
+                                    <td>
+                                        @switch (i.Status.Name)
+                                        {
+                                            case "Approved":
+                                                <label class="badge badge-success">@i.Status.Name</label>
+                                                break;
+                                            case "Rejected":
+                                                <label class="badge badge-danger">@i.Status.Name</label>
+                                                break;
+                                            case "Pending":
+                                                <label class="badge badge-warning">@i.Status.Name</label>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @i.Status.Message
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
