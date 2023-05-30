@@ -1,0 +1,171 @@
+@model IEnumerable<Client.Models.Department>
+
+@{
+    Layout = "_Layout";
+}
+
+<article style="margin-top: 2.5rem">
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow">
+                    <div class="col-lg-5 mx-auto">
+                        <div class="auth-form-light text-left p-5">
+                            <h6 class="font-weight-light">Register is easy. It only takes a few steps</h6>
+                            <form id="registerForm" method="post" asp-controller="Auth" asp-action="ProcessRegister" class="pt-3">
+                                <div class="form-group">
+                                    <label class="form-label">Nik</label>
+                                    <input type="text" class="form-control form-control-lg" id="nik" name="nik" placeholder="12345">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="John"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Doe"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Birth Date</label>
+                                    <input type="date" class="form-control form-control-lg" id="birthDate" name="birthDate">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Gender</label>
+                                    <select class="form-control form-control-lg" id="gender" name="gender">
+                                        <option value="">-</option>
+                                        <option value="F">Female</option>
+                                        <option value="M">Male</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" id="email" name="email" class="form-control" placeholder="john@gmail.com"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Phone Number (optional)</label>
+                                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control form-control-lg" id="confirmPassword" name="confirmPassword" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="departmentId">Department</label>
+                                    <select class="form-control form-control-lg" id="departmentId" name="departmentId" asp-items="@(new SelectList(Model, "Id", "Name"))">
+                                        <option value="">-</option>
+                                    </select>
+                                </div>
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">REGISTER</button>
+                                </div>
+                                <div class="text-center mt-4 font-weight-light">
+                                    Already have an account? <a asp-controller="Auth" asp-action="Login" class="text-primary">Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+</article>
+
+@section Scripts
+{
+    <script>
+        // Validation
+        $('form#registerForm input').on('keypress', function(){
+            $(this).removeClass('is-invalid');
+            $(this).parent().$('.invalid-feedback').remove();
+        });
+        $('form#registerForm select').on('change', function(){
+            $(this).removeClass('is-invalid');
+            $(this).parent().$('.invalid-feedback').remove();
+        });
+        $('form#registerForm').on('submit', function () {
+            let isValid = true;
+            const inpNik = $('form#registerForm input[name="nik"]');
+            const inpFirstName = $('form#registerForm input[name="firstName"]');
+            const inpBirthDate = $('form#registerForm input[name="birthDate"]');
+            const selGender = $('form#registerForm select[name="gender"]');
+            const inpEmail = $('form#registerForm input[name="email"]');
+            const inpPassword = $('form#registerForm input[name="password"]');
+            const inpConfirmPassword = $('form#registerForm input[name="confirmPassword"]');
+            const selDepartment = $('form#registerForm select[name="departmentId"]');
+            $('form#registerForm input').removeClass('is-invalid');
+            $('.invalid-feedback').remove();
+            
+            if (inpNik.val() === '') {
+                inpNik.addClass('is-invalid');
+                inpNik.focus();
+                inpNik.parent().append('<div class="invalid-feedback">Nik is required</div>')
+                isValid = false;
+            }
+            if (inpFirstName.val() === '') {
+                inpFirstName.addClass('is-invalid');
+                inpFirstName.focus();
+                inpFirstName.parent().append('<div class="invalid-feedback">First Name is required</div>')
+                isValid = false;
+            }
+            if (inpBirthDate.val() === '') {
+                inpBirthDate.addClass('is-invalid');
+                inpBirthDate.focus();
+                inpBirthDate.parent().append('<div class="invalid-feedback">Birth Date is required</div>')
+                isValid = false;
+            }
+            if (selGender.val() === '') {
+                selGender.addClass('is-invalid');
+                selGender.focus();
+                selGender.parent().append('<div class="invalid-feedback">Gender is required</div>')
+                isValid = false;
+            }
+            if (inpEmail.val() === '') {
+                inpEmail.addClass('is-invalid');
+                inpEmail.focus();
+                inpEmail.parent().append('<div class="invalid-feedback">Email is required</div>')
+                isValid = false;
+            }
+            if (inpPassword.val() === '') {
+                inpPassword.addClass('is-invalid');
+                inpPassword.focus();
+                inpPassword.parent().append('<div class="invalid-feedback">Password is required</div>')
+                isValid = false;
+            }
+            if (inpConfirmPassword.val() !== inpPassword.val()) {
+                inpConfirmPassword.addClass('is-invalid');
+                inpConfirmPassword.focus();
+                inpConfirmPassword.parent().append('<div class="invalid-feedback">Confirm Password does not match</div>')
+                isValid = false;
+            }
+            if (selDepartment.val() === '') {
+                selDepartment.addClass('is-invalid');
+                selDepartment.focus();
+                selDepartment.parent().append('<div class="invalid-feedback">Department is required</div>')
+                isValid = false;
+            }
+            if (isValid) {
+                $('form#registerForm').submit();
+            } else {
+                return false;
+            }
+        })
+    </script>
+}
