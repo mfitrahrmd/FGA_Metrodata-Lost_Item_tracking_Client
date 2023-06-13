@@ -32,7 +32,7 @@
             <div class="col-lg-4">
                 <div class="row">
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <div>Filter :</div>
+                        <div>Search :</div>
                     </div>
                     <div class="col-8">
                         <input type="text" onkeyup="filterCard()" class="form-control" name="cardFilterInput" id="cardFilterInput">
@@ -100,4 +100,26 @@
         $('#base-modal form input[name=itemId]').val(itemId);
       }
     </script>
+    
+    @if (TempData["sucMsg"] is not null)
+        {
+            <script>
+            Swal.fire({
+              icon: 'success',
+              title: '@TempData["sucMsg"]',
+              timer: 2000
+            })
+            </script>
+        }
+        
+        @if (TempData["errMsg"] is not null)
+        {
+            <script>
+            Swal.fire({
+              icon: 'error',
+              title: '@TempData["errMsg"]',
+              timer: 2000
+            })
+            </script>
+        }
 }

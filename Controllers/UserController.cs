@@ -70,18 +70,39 @@ public class UserController : Controller
     [Route("Items/RequestFound")]
     public async Task<IActionResult> ProcessRequestFound([FromForm] RequestFound request)
     {
-        var response = await _restapiService.PostForm<RequestFound, Response<Item>>("items/request-found", request, HttpContext.Session.GetString("AccessToken"));
+        try
+        {
+            var response = await _restapiService.PostForm<RequestFound, Response<Item>>("items/request-found", request, HttpContext.Session.GetString("AccessToken"));
 
-        return RedirectToAction("MyRequestFoundItems");
+            TempData["sucMsg"] = $"Request found item {response.Data.Name} sent.";
+
+            return RedirectToAction("MyRequestFoundItems");
+        }
+        catch (Exception e)
+        {
+            TempData["errMsg"] = "Failed to request found item.";
+            return RedirectToAction("MyRequestFoundItems");
+        }
     }
     
     [HttpPost]
     [Route("Items/RequestClaim")]
     public async Task<IActionResult> ProcessRequestClaim([FromForm] requestClaim request)
     {
-        var response = await _restapiService.Post<Response<Item>>($"items/found/{request.ItemId}/request-claim", HttpContext.Session.GetString("AccessToken"));
-        
-        return RedirectToAction("MyRequestClaimItems");
+        try
+        {
+            var response = await _restapiService.Post<Response<Item>>($"items/found/{request.ItemId}/request-claim", HttpContext.Session.GetString("AccessToken"));
+
+            TempData["sucMsg"] = $"Request claim item {response.Data.Name} sent.";
+
+            return RedirectToAction("MyRequestClaimItems");
+        }
+        catch (Exception e)
+        {
+            TempData["errMsg"] = $"Failed to request claim item.";
+
+            return RedirectToAction("MyRequestClaimItems");
+        }
     }
     
     [Route("Profile")]

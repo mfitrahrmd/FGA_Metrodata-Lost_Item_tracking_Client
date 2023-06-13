@@ -37,12 +37,21 @@
                                         <img src="@i.ImagePath" class="card-img-top img-fluid rounded-start h-100" alt="...">
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">@i.Name</h5>
-                                            <p class="card-text">@i.Description</p>
-                                            <p class="text-muted card-description small">
-                                                Found @@@i.FoundAt by @i.FoundBy.FullName
-                                            </p>
+                                        <div class="h-100 card-body">
+                                            <div class="h-100 d-flex flex-column justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">@i.Name</h5>
+                                                    <p class="card-text">@i.Description</p>
+                                                </div>
+                                                <div class="card-description p-0 m-0">
+                                                    <h5 class="text-muted small">
+                                                        Found By @i.FoundBy.FullName
+                                                    </h5>
+                                                    <h5 class="text-muted small">
+                                                        @@ @i.FoundAt.ToString("dd-MM-yyyy tt")
+                                                    </h5>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

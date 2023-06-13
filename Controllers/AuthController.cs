@@ -29,25 +29,41 @@ public class AuthController : Controller
     [HttpPost]
     public async Task<IActionResult> ProcessLogin([FromForm] LoginRequest request)
     {
-        var response = await _restapiService.Login(request);
+        try
+        {
+            var response = await _restapiService.Login(request);
 
-        HttpContext.Session.SetString("AccessToken", response.Data.AccessToken);
-
-        return RedirectToAction("Index", "Home");
+            HttpContext.Session.SetString("AccessToken", response.Data.AccessToken);
+            
+            return RedirectToAction("FoundItems", "Home");
+        }
+        catch (Exception e)
+        {
+            TempData["msg"] = "Incorrect Nik/Password.";
+            return RedirectToAction("Login");
+        }
     }
 
     public async Task<IActionResult> Logout()
     {
         HttpContext.Session.Remove("AccessToken");
         
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Login", "Auth");
     }
 
     [HttpPost]
     public async Task<IActionResult> ProcessRegister([FromForm] RegisterRequest request)
     {
-        var response = await _restapiService.Register(request);
+        try
+        {
+            var response = await _restapiService.Register(request);
         
-        return RedirectToAction("Login");
+            return RedirectToAction("Login");
+        }
+        catch (Exception e)
+        {
+            TempData["msg"] = "Nik or Email is not unique.";
+            return RedirectToAction("Register");
+        }
     }
 }
